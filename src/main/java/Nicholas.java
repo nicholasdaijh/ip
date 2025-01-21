@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.Arrays;
 
 public class Nicholas {
     public static void main(String[] args) {
@@ -18,12 +17,12 @@ public class Nicholas {
             //if asked to mark or unmark tasks
             if (userInput.length() >= 4 && userInput.substring(0, 4).equalsIgnoreCase("mark")) {
                 Mark mark = new Mark(true, userInput);
-                int taskIndex = mark.getTaskIndex() + 1;
+                int taskIndex = mark.getTaskIndex();
+                tasks[taskIndex].markAsDone();
                 System.out.println("____________________________________________________________");
                 System.out.println("Nice! I've marked this task as done:");
-                System.out.println("[X] " + tasks[taskIndex].getDescription());
+                System.out.println(tasks[taskIndex].toString());
                 System.out.println("____________________________________________________________");
-                tasks[taskIndex].markAsDone();
                 userInput = scanner.nextLine();
                 continue;
             }
@@ -39,24 +38,56 @@ public class Nicholas {
                 continue;
             }
             //if asked to list out the tasks
-            if (userInput.equalsIgnoreCase("list")) {
+            if (userInput.length() >= 4 && userInput.equalsIgnoreCase("list")) {
                 System.out.println("____________________________________________________________");
                 System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < taskCount; i++) {
                     int index = i + 1;
-                    System.out.println(index + ".[" + tasks[i].getStatusIcon() + "] " + tasks[i].getDescription());
+                    System.out.println(index + "." + tasks[i].toString());
                 }
                 System.out.println("____________________________________________________________");
                 userInput = scanner.nextLine();
                 continue;
             }
+
             //Add normal task
-            System.out.println("____________________________________________________________");
-            System.out.println("added: " + userInput);
-            System.out.println("____________________________________________________________\n");
-            tasks[taskCount] = new Task(userInput);
-            taskCount++;
-            userInput = scanner.nextLine();
+            //Add Todo
+            if (userInput.length() >= 4 && userInput.substring(0, 4).equalsIgnoreCase("todo")) {
+                Task currTask = new Todo(userInput.substring(5));
+                tasks[taskCount] = currTask;
+                taskCount++;
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(currTask.toString());
+                System.out.println("Now you have " + taskCount + " tasks in the list");
+                System.out.println("____________________________________________________________\n");
+                userInput = scanner.nextLine();
+            //Add Dateline
+            } else if (userInput.length() >= 8 && userInput.substring(0, 8).equalsIgnoreCase("deadline")) {
+                int byPosition = userInput.lastIndexOf("/by");
+                Task currTask = new Deadline(userInput.substring(9, byPosition - 1), userInput.substring(byPosition + 4));
+                tasks[taskCount] = currTask;
+                taskCount++;
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(currTask.toString());
+                System.out.println("Now you have " + taskCount + " tasks in the list");
+                System.out.println("____________________________________________________________\n");
+                userInput = scanner.nextLine();
+            //Add Event
+            } else if (userInput.length() >= 5 && userInput.substring(0, 5).equalsIgnoreCase("event")) {
+                int fromPosition = userInput.lastIndexOf("/from");
+                int toPosition = userInput.lastIndexOf("/to");
+                Task currTask = new Event(userInput.substring(6, fromPosition - 1), userInput.substring(fromPosition + 6, toPosition - 1), userInput.substring(toPosition + 4));
+                tasks[taskCount] = currTask;
+                taskCount++;
+                System.out.println("____________________________________________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(currTask.toString());
+                System.out.println("Now you have " + taskCount + " tasks in the list");
+                System.out.println("____________________________________________________________\n");
+                userInput = scanner.nextLine();
+            }
         }
         System.out.println("____________________________________________________________");
         System.out.println("Bye. Hope to see you again soon!");
