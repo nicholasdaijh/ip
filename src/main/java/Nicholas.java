@@ -1,167 +1,118 @@
-import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.*;
 
 public class Nicholas {
-    public static void main(String[] args) {
-        //Store tasks
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
-        System.out.println("____________________________________________________________");
-        System.out.println("Hello! I'm Nicholas!");
-        System.out.println("What can I do for you?");
-        System.out.println("____________________________________________________________\n");
-        //Scanner to receive user's input
+    public static void main(String[] args) throws IOException {
+        // Initialize components
+        Ui ui = new Ui();
+        Storage storage = new Storage("tasks.txt");
+        Parser parser = new Parser();
+        TaskList taskList = new TaskList();
+
+        // Load tasks from file
+        List<Task> loadedTasks = storage.loadTasks();
+        for (Task task: loadedTasks) {
+            taskList.addTask(task);
+        }
+
+        // Show greeting
+        ui.showGreeting();
+
         Scanner scanner = new Scanner(System.in);
-        //store user's input
         String userInput = scanner.nextLine();
+
+        // Main loop
         while (!userInput.equalsIgnoreCase("bye")) {
             try {
-            //if asked to mark or unmark tasks
-            if (userInput.length() >= 4 && userInput.substring(0, 4).equalsIgnoreCase("mark")) {
-                Mark mark = new Mark(true, userInput);
-                int taskIndex = mark.getTaskIndex() - 1;
-                tasks[taskIndex].markAsDone();
-                System.out.println("____________________________________________________________");
-                System.out.println("Nice! I've marked this task as done:");
-                System.out.println(tasks[taskIndex].toString());
-                System.out.println("____________________________________________________________");
-                userInput = scanner.nextLine();
-                continue;
-            }
-            if (userInput.length() >= 6 && userInput.substring(0, 6).equalsIgnoreCase("unmark")) {
-                Mark mark = new Mark(false, userInput);
-                int taskIndex = mark.getTaskIndex() - 1;
-                tasks[taskIndex].markAsUndone();
-                System.out.println("____________________________________________________________");
-                System.out.println("OK, I've marked this task as not done yet:");
-                System.out.println(tasks[taskIndex].toString());
-                System.out.println("____________________________________________________________");
-                userInput = scanner.nextLine();
-                continue;
-            }
-            //if asked to list out the tasks
-            if (userInput.length() >= 4 && userInput.equalsIgnoreCase("list")) {
-                System.out.println("____________________________________________________________");
-                System.out.println("Here are the tasks in your list:");
-                for (int i = 0; i < taskCount; i++) {
-                    int index = i + 1;
-                    System.out.println(index + "." + tasks[i].toString());
-                }
-                System.out.println("____________________________________________________________");
-                userInput = scanner.nextLine();
-                continue;
-            }
-            //if asked to delete
-            if (userInput.length() >= 6 && userInput.substring(0, 6).equalsIgnoreCase("delete")) {
-                System.out.println("____________________________________________________________");
-                System.out.println("Noted. I've removed this task:");
-                System.out.println(tasks[Integer.parseInt(userInput.substring(7)) - 1].toString());
-                for (int i = Integer.parseInt(userInput.substring(7)); i < taskCount; i++) {
-                    tasks[i - 1] = tasks[i];
-                }
-                tasks[taskCount - 1] = null;
-                taskCount--;
-                System.out.println("Now you have " + taskCount + " tasks in the list");
-                System.out.println("____________________________________________________________");
-                userInput = scanner.nextLine();
-                continue;
-            }
-            //Add normal task
-            //Add Todo
-            if (userInput.length() >= 4 && userInput.substring(0, 4).equalsIgnoreCase("todo")) {
-                Task currTask;
-                // check for empty description
-                if (userInput.length() == 4) {
-                    currTask = new Todo("");
-                } else {
-                    currTask = new Todo(userInput.substring(5));
-                }
-                try {
-                    EmptyDescriptionValidator.validateEmptyDescription(currTask.getDescription(), "todo");
-                    tasks[taskCount] = currTask;
-                    taskCount++;
-                    System.out.println("____________________________________________________________");
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println(currTask.toString());
-                    System.out.println("Now you have " + taskCount + " tasks in the list");
-                    System.out.println("____________________________________________________________\n");
-                    userInput = scanner.nextLine();
-                } catch (EmptyDescriptionException e) {
-                    System.out.println("____________________________________________________________");
-                    System.out.println(e.getMessage());
-                    System.out.println("____________________________________________________________\n");
-                    userInput = scanner.nextLine();
-                }
-                //Add Dateline
-            } else if (userInput.length() >= 8 && userInput.substring(0, 8).equalsIgnoreCase("deadline")) {
-                Task currTask;
-                //check for empty description
-                if (userInput.length() == 8) {
-                    currTask = new Event("", "", "");
-                } else if (userInput.length() > 8 && userInput.substring(9).trim().isEmpty()) {
-                    currTask = new Event("", "", "");
-                } else {
-                    int byPosition = userInput.lastIndexOf("/by");
-                    currTask = new Deadline(userInput.substring(9, byPosition - 1), userInput.substring(byPosition + 4));
-                }
-                try {
-                    EmptyDescriptionValidator.validateEmptyDescription(currTask.getDescription(), "deadline");
-                    tasks[taskCount] = currTask;
-                    taskCount++;
-                    System.out.println("____________________________________________________________");
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println(currTask.toString());
-                    System.out.println("Now you have " + taskCount + " tasks in the list");
-                    System.out.println("____________________________________________________________\n");
-                    userInput = scanner.nextLine();
-                } catch (EmptyDescriptionException e) {
-                    System.out.println("____________________________________________________________");
-                    System.out.println(e.getMessage());
-                    System.out.println("____________________________________________________________\n");
-                    userInput = scanner.nextLine();
-                }
-                //Add Event
-            } else if (userInput.length() >= 5 && userInput.substring(0, 5).equalsIgnoreCase("event")) {
-                Task currTask;
-                //check for empty description
-                if (userInput.length() == 5) {
-                    currTask = new Event("", "", "");
-                } else if (userInput.length() > 5 && userInput.substring(6).trim().isEmpty()) {
-                    currTask = new Event("", "", "");
-                } else {
-                    int fromPosition = userInput.lastIndexOf("/from");
-                    int toPosition = userInput.lastIndexOf("/to");
-                    currTask = new Event(userInput.substring(6, fromPosition - 1), userInput.substring(fromPosition + 6, toPosition - 1), userInput.substring(toPosition + 4));
-                }
-                try {
-                    EmptyDescriptionValidator.validateEmptyDescription(currTask.getDescription(), "event");
-                    tasks[taskCount] = currTask;
-                    taskCount++;
-                    System.out.println("____________________________________________________________");
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println(currTask.toString());
-                    System.out.println("Now you have " + taskCount + " tasks in the list");
-                    System.out.println("____________________________________________________________\n");
-                    userInput = scanner.nextLine();
-                } catch (EmptyDescriptionException e) {
-                    System.out.println("____________________________________________________________");
-                    System.out.println(e.getMessage());
-                    System.out.println("____________________________________________________________\n");
-                    userInput = scanner.nextLine();
-                }
-            } else {
-                //if input is not a task
+                String[] commandParts = parser.parseCommand(userInput);
+                String command = commandParts[0].toLowerCase();
+                switch (command) {
+                case "mark":
+                    int markIndex = Integer.parseInt(commandParts[1]) - 1;
+                    taskList.markTaskAsDone(markIndex);
+                    ui.showTaskMarked(taskList.getTasks().get(markIndex));
+                    break;
+
+                case "unmark":
+                    int unmarkIndex = Integer.parseInt(commandParts[1]) - 1;
+                    taskList.markTaskAsUndone(unmarkIndex);
+                    ui.showTaskUnmarked(taskList.getTasks().get(unmarkIndex));
+                    break;
+
+                case "list":
+                    ui.showTaskList(taskList.getTasks().toArray(new Task[0]), taskList.size());
+                    break;
+
+                case "delete":
+                    int deleteIndex = Integer.parseInt(commandParts[1]) - 1;
+                    Task taskToDelete = taskList.getTasks().get(deleteIndex);
+                    taskList.deleteTask(deleteIndex);
+                    ui.showTaskDeleted(taskToDelete, taskList.size());
+                    break;
+
+                case "todo":
+                    // Parse the description from the user input (skip the 'todo' part)
+                    if ((userInput.length() == 4) || commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+                        throw new EmptyCommandException(command);
+                    }
+                    String todoDescription = commandParts[1].trim();
+                    // Create a Todo task
+                    Task todoTask = new Todo(todoDescription);
+
+                    // Add the task to the task list
+                    taskList.addTask(todoTask);
+
+                    // Display success message
+                    ui.showTaskAdded(todoTask, taskList.size());
+                    break;
+
+                case "deadline":
+                    // Parse the description and the deadline date
+                    if ((userInput.length() == 8) || commandParts.length < 2 || commandParts[1].split("/by")[0].trim().isEmpty()) {
+                        throw new EmptyCommandException(command);
+                    }
+                    Task deadlineTask = parser.parseDeadline(commandParts[1]);
+                    // Add the task to the task list
+                    taskList.addTask(deadlineTask);
+
+                    // Display success message
+                    ui.showTaskAdded(deadlineTask, taskList.size());
+                    break;
+
+                case "event":
+                    // Parse the description, from time, and to time
+                    if ((userInput.length() == 5) || commandParts.length < 2 || commandParts[1].split("/from")[0].trim().isEmpty()) {
+                        throw new EmptyCommandException(command);
+                    }
+
+                    // Create an Event task
+                    Task eventTask = parser.parseEvent(commandParts[1]);
+
+                    // Add the task to the task list
+                    taskList.addTask(eventTask);
+
+                    // Display success message
+                    ui.showTaskAdded(eventTask, taskList.size());
+                    break;
+
+                default:
                 throw new NotTaskException("OOPS!!! I'm sorry, but I don't know what that means :-(");
+                }
+
+            } catch (NotTaskException | EmptyCommandException e) {
+                ui.showErrorMessage(e.getMessage());
             }
-            } catch (NotTaskException e) {
-                // Handle invalid command
-                System.out.println("____________________________________________________________");
-                System.out.println(e.getMessage());
-                System.out.println("____________________________________________________________\n");
-                userInput = scanner.nextLine();
-            }
+
+            storage.emptyFile("tasks.txt");
+            storage.saveTasks(taskList.getTasks());
+            userInput = scanner.nextLine();
         }
-        System.out.println("____________________________________________________________");
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println("____________________________________________________________");
+
+        // Save tasks to file before exit
+        storage.saveTasks(taskList.getTasks());
+
+        // Show bye message
+        ui.showBye();
     }
 }

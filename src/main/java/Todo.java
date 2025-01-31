@@ -1,11 +1,11 @@
 public class Todo extends Task {
 
     public Todo(String description) {
-        super(description);
+        super(description);  // Call parent constructor
     }
 
     @Override
-    public String toString() {
-        return "[T]" + "[" + super.getStatusIcon() + "] " + super.getDescription();
+    public String getTaskType() {
+        return "T";  // 'T' for Todo task
     }
 }

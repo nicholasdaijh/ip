@@ -1,14 +1,18 @@
 public class Deadline extends Task {
-
-    private String by;
+    private String by;  // Deadline date or time
 
     public Deadline(String description, String by) {
-        super(description);
+        super(description);  // Call parent constructor
         this.by = by;
     }
 
     @Override
+    public String getTaskType() {
+        return "D";  // 'D' for Deadline task
+    }
+
+    @Override
     public String toString() {
-        return "[D]" + "[" + super.getStatusIcon() + "] " + super.getDescription() + " (by: " + by + ")";
+        return super.toString() + " (by: " + by + ")";
     }
 }
