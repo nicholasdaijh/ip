@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+
 import nicholas.exception.NotTaskException;
 import nicholas.exception.EmptyCommandException;
 import nicholas.tasks.Task;
 import nicholas.tasks.TaskList;
 import nicholas.tasks.Todo;
 
+/**
+ * The main class for the Nicholas task management application.
+ */
 public class Nicholas {
     public static void main(String[] args) throws IOException {
         // Initialize components
