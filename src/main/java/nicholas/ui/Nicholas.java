@@ -50,12 +50,20 @@ public class Nicholas {
 
                 switch (command) {
                 case "mark":
+                    if ((userInput.length() == 4) || commandParts.length < 2
+                            || commandParts[1].trim().isEmpty()) {
+                        throw new EmptyCommandException(command);
+                    }
                     int markIndex = Integer.parseInt(commandParts[1]) - 1;
                     taskList.markTaskAsDone(markIndex);
                     ui.showTaskMarked(taskList.getTasks().get(markIndex));
                     break;
 
                 case "unmark":
+                    if ((userInput.length() == 6) || commandParts.length < 2
+                            || commandParts[1].trim().isEmpty()) {
+                        throw new EmptyCommandException(command);
+                    }
                     int unmarkIndex = Integer.parseInt(commandParts[1]) - 1;
                     taskList.markTaskAsUndone(unmarkIndex);
                     ui.showTaskUnmarked(taskList.getTasks().get(unmarkIndex));
@@ -66,6 +74,10 @@ public class Nicholas {
                     break;
 
                 case "delete":
+                    if ((userInput.length() == 6) || commandParts.length < 2
+                            || commandParts[1].trim().isEmpty()) {
+                        throw new EmptyCommandException(command);
+                    }
                     int deleteIndex = Integer.parseInt(commandParts[1]) - 1;
                     Task taskToDelete = taskList.getTasks().get(deleteIndex);
                     taskList.deleteTask(deleteIndex);
@@ -73,6 +85,10 @@ public class Nicholas {
                     break;
 
                 case "find":
+                    if ((userInput.length() == 4) || commandParts.length < 2
+                            || commandParts[1].trim().isEmpty()) {
+                        throw new EmptyCommandException(command);
+                    }
                     ui.showTaskFind(taskList.getTasks().toArray(new Task[0]), commandParts[1], taskList.size());
                     break;
 
