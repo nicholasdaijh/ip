@@ -1,10 +1,20 @@
+package nicholas.ui;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+import nicholas.tasks.Deadline;
+import nicholas.tasks.Event;
+import nicholas.tasks.Task;
+import nicholas.tasks.Todo;
 public class Parser {
 
     public static String[] parseCommand(String userInput) {
         return userInput.trim().split(" ", 2);
     }
 
-    public static Task parseTask(String input) {
+    public Task parseTask(String input) {
         String[] parts = input.split("\\]\\[", 2);
         String taskType = parts[0];
         // Common description extraction (excluding the task type)
@@ -21,7 +31,7 @@ public class Parser {
                 throw new IllegalArgumentException("Invalid deadline format");
             }
             String deadlineDate = descriptionAndDate.substring(deadlineBy + 4, descriptionAndDate.length() - 1);
-            return parseDeadline(descriptionAndDate.substring(0, deadlineBy - 2) + " /by " + deadlineDate);
+            return parseDeadline(descriptionAndDate.substring(0, deadlineBy - 2) + " /by " + reverseParseDate(deadlineDate));
         case "[E":
             // Handle "event" task
             // Find start and end times for the event
@@ -40,10 +50,35 @@ public class Parser {
             String eventEnd = descriptionAndDate.substring(eventEndIndexBegin, eventEndIndexEnd).trim();
 
             // Return parsed event task
-            return parseEvent(descriptionAndDate.substring(0, eventStartIndexBegin - 8) + " /from " + eventStart + " /to " + eventEnd);
+            return parseEvent(descriptionAndDate.substring(0, eventStartIndexBegin - 8) +
+                " /from " + reverseParseDate(eventStart) + " /to " + reverseParseDate(eventEnd));
 
         default:
             throw new IllegalArgumentException("Invalid task type: " + taskType);
+        }
+    }
+
+    public String parseDate(String by) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"); // Expected format
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"); // Desired format
+
+        try {
+            LocalDateTime dateTime = LocalDateTime.parse(by, inputFormatter);
+            return dateTime.format(outputFormatter); // Convert to new format
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format. Expected: yyyy-MM-dd HHmm (e.g., 2025-02-01 1530)", e);
+        }
+    }
+
+    public String reverseParseDate(String by) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+
+        try {
+            LocalDateTime dateTime = LocalDateTime.parse(by, inputFormatter);
+            return dateTime.format(outputFormatter); // Convert to new format
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format. Expected: MMM dd yyyy HHmm", e);
         }
     }
 

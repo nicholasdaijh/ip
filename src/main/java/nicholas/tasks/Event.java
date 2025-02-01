@@ -1,12 +1,16 @@
+package nicholas.tasks;
+import nicholas.ui.Parser;
 public class Event extends Task {
     private String from;
     private String to;
 
     public Event(String description, String from, String to) {
         super(description);  // Call parent constructor
-        this.from = from;
-        this.to = to;
+        Parser parser = new Parser();
+        this.from = parser.parseDate(from);
+        this.to = parser.parseDate(to);
     }
+
 
     @Override
     public String getTaskType() {

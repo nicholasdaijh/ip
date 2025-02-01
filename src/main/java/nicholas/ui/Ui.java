@@ -1,3 +1,7 @@
+package nicholas.ui;
+
+import nicholas.tasks.Task;
+
 public class Ui {
     private static final String LINE= "____________________________________________________________";
     public void showGreeting() {

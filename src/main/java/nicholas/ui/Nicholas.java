@@ -1,7 +1,13 @@
-import java.io.FileNotFoundException;
+package nicholas.ui;
+
 import java.io.IOException;
 import java.util.*;
 
+import nicholas.exception.NotTaskException;
+import nicholas.exception.EmptyCommandException;
+import nicholas.tasks.Task;
+import nicholas.tasks.TaskList;
+import nicholas.tasks.Todo;
 public class Nicholas {
     public static void main(String[] args) throws IOException {
         // Initialize components

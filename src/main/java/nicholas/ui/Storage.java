@@ -1,5 +1,9 @@
+package nicholas.ui;
+
 import java.io.*;
 import java.util.*;
+
+import nicholas.tasks.Task;
 
 public class Storage {
     private String filePath;
