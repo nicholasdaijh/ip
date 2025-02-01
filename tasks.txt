@@ -1,5 +1,4 @@
 [T][X] read books
 [E][X] something (from: Oct 10 2002 1600 to: Oct 11 2002 1600)
 [D][X] anything (by: Oct 15 2003 1500)
-[T][ ] read books
 [T][ ] borrow books
