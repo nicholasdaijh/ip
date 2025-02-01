@@ -1,5 +1,7 @@
 package nicholas.tasks;
+
 import nicholas.ui.Parser;
+
 public class Event extends Task {
     private String from;
     private String to;
