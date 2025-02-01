@@ -23,7 +23,13 @@ public class Parser {
         switch (taskType) {
         case "[T":
             // Handle "todo" task
-            return new Todo(descriptionAndDate);
+            Task todoTask = new Todo(descriptionAndDate);
+            if (input.charAt(4) == 'X') {
+                todoTask.markAsDone();
+                return todoTask;
+            } else {
+                return todoTask;
+            }
         case "[D":
             // Handle "deadline" task
             // Split on the "by" keyword to extract deadline time
@@ -32,7 +38,13 @@ public class Parser {
                 throw new IllegalArgumentException("Invalid deadline format");
             }
             String deadlineDate = descriptionAndDate.substring(deadlineBy + 4, descriptionAndDate.length() - 1);
-            return parseDeadline(descriptionAndDate.substring(0, deadlineBy - 2) + " /by " + reverseParseDate(deadlineDate));
+            Task deadlineTask = parseDeadline(descriptionAndDate.substring(0, deadlineBy - 2) + " /by " + reverseParseDate(deadlineDate));
+            if (input.charAt(4) == 'X') {
+                deadlineTask.markAsDone();
+                return deadlineTask;
+            } else {
+                return deadlineTask;
+            }
         case "[E":
             // Handle "event" task
             // Find start and end times for the event
@@ -51,8 +63,14 @@ public class Parser {
             String eventEnd = descriptionAndDate.substring(eventEndIndexBegin, eventEndIndexEnd).trim();
 
             // Return parsed event task
-            return parseEvent(descriptionAndDate.substring(0, eventStartIndexBegin - 8) +
+            Task eventTask = parseEvent(descriptionAndDate.substring(0, eventStartIndexBegin - 8) +
                 " /from " + reverseParseDate(eventStart) + " /to " + reverseParseDate(eventEnd));
+            if (input.charAt(4) == 'X') {
+                eventTask.markAsDone();
+                return eventTask;
+            } else {
+                return eventTask;
+            }
 
         default:
             throw new IllegalArgumentException("Invalid task type: " + taskType);

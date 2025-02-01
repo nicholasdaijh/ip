@@ -1,4 +1,3 @@
-[E][ ] something (from: Oct 10 2002 1600 to: Oct 11 2002 1600)
-[T][ ] read books
-[D][ ] lolol (by: Sep 10 2002 1400)
-[T][ ] read books
+[T][X] read books
+[E][X] something (from: Oct 10 2002 1600 to: Oct 11 2002 1600)
+[D][X] anything (by: Oct 15 2003 1500)
