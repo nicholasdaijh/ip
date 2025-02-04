@@ -19,7 +19,8 @@ public class Event extends Task {
      * @param to The end time of the event in "yyyy-MM-dd HHmm" format.
      */
     public Event(String description, String from, String to) {
-        super(description);  // Call parent constructor
+        // Call parent constructor
+        super(description);
         Parser parser = new Parser();
         this.from = parser.parseDate(from);
         this.to = parser.parseDate(to);
@@ -32,7 +33,8 @@ public class Event extends Task {
      */
     @Override
     public String getTaskType() {
-        return "E";  // 'E' for Event task
+        // 'E' for Event task
+        return "E";
     }
 
     /**

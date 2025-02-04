@@ -12,7 +12,8 @@ public class Todo extends Task {
      * @param description The description of the Todo task.
      */
     public Todo(String description) {
-        super(description);  // Call parent constructor
+        // Call parent constructor
+        super(description);
     }
 
     /**
@@ -22,6 +23,7 @@ public class Todo extends Task {
      */
     @Override
     public String getTaskType() {
-        return "T";  // 'T' for Todo task
+        // 'T' for Todo task
+        return "T";
     }
 }

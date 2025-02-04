@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-import nicholas.exception.NotTaskException;
 import nicholas.exception.EmptyCommandException;
+import nicholas.exception.NotTaskException;
 import nicholas.tasks.Task;
 import nicholas.tasks.TaskList;
 import nicholas.tasks.Todo;
@@ -58,7 +58,6 @@ public class Nicholas {
                     taskList.markTaskAsDone(markIndex);
                     ui.showTaskMarked(taskList.getTasks().get(markIndex));
                     break;
-
                 case "unmark":
                     if ((userInput.length() == 6) || commandParts.length < 2
                             || commandParts[1].trim().isEmpty()) {
@@ -68,11 +67,9 @@ public class Nicholas {
                     taskList.markTaskAsUndone(unmarkIndex);
                     ui.showTaskUnmarked(taskList.getTasks().get(unmarkIndex));
                     break;
-
                 case "list":
                     ui.showTaskList(taskList.getTasks().toArray(new Task[0]), taskList.size());
                     break;
-
                 case "delete":
                     if ((userInput.length() == 6) || commandParts.length < 2
                             || commandParts[1].trim().isEmpty()) {
@@ -83,7 +80,6 @@ public class Nicholas {
                     taskList.deleteTask(deleteIndex);
                     ui.showTaskDeleted(taskToDelete, taskList.size());
                     break;
-
                 case "find":
                     if ((userInput.length() == 4) || commandParts.length < 2
                             || commandParts[1].trim().isEmpty()) {
@@ -91,7 +87,6 @@ public class Nicholas {
                     }
                     ui.showTaskFind(taskList.getTasks().toArray(new Task[0]), commandParts[1], taskList.size());
                     break;
-
                 case "todo":
                     if ((userInput.length() == 4) || commandParts.length < 2
                             || commandParts[1].trim().isEmpty()) {
@@ -102,7 +97,6 @@ public class Nicholas {
                     taskList.addTask(todoTask);
                     ui.showTaskAdded(todoTask, taskList.size());
                     break;
-
                 case "deadline":
                     if ((userInput.length() == 8) || commandParts.length < 2
                             || commandParts[1].split("/by")[0].trim().isEmpty()) {
@@ -112,7 +106,6 @@ public class Nicholas {
                     taskList.addTask(deadlineTask);
                     ui.showTaskAdded(deadlineTask, taskList.size());
                     break;
-
                 case "event":
                     if ((userInput.length() == 5) || commandParts.length < 2
                             || commandParts[1].split("/from")[0].trim().isEmpty()) {
@@ -122,7 +115,6 @@ public class Nicholas {
                     taskList.addTask(eventTask);
                     ui.showTaskAdded(eventTask, taskList.size());
                     break;
-
                 default:
                     throw new NotTaskException("OOPS!!! I'm sorry, but I don't know what that means :-(");
                 }

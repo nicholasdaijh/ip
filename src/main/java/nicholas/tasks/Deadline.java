@@ -7,8 +7,8 @@ import nicholas.ui.Parser;
  * A Deadline task contains a description and a deadline date.
  */
 public class Deadline extends Task {
-    private String by;  // Deadline date or time
-
+    // Deadline date or time
+    private String by;
     /**
      * Constructs a Deadline task with the given description and due date.
      * The due date is parsed into a formatted date.
@@ -17,7 +17,8 @@ public class Deadline extends Task {
      * @param by The due date in "yyyy-MM-dd HHmm" format.
      */
     public Deadline(String description, String by) {
-        super(description);  // Call parent constructor
+        // Call parent constructor
+        super(description);
         Parser parser = new Parser();
         this.by = parser.parseDate(by);
     }
@@ -29,7 +30,8 @@ public class Deadline extends Task {
      */
     @Override
     public String getTaskType() {
-        return "D";  // 'D' for Deadline task
+        // 'D' for Deadline task
+        return "D";
     }
 
     /**
