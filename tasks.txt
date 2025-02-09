@@ -1,6 +1,1 @@
-[T][X] read books
-[E][X] something (from: Oct 10 2002 1600 to: Oct 11 2002 1600)
-[D][X] anything (by: Oct 15 2003 1500)
-[T][ ] read books
-[E][X] partying (from: Sep 29 2019 2000 to: Sep 30 2019 0300)
-[D][ ] assignment (by: Sep 09 2023 2359)
+[T][ ] cook food

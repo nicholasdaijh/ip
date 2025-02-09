@@ -1,0 +1,45 @@
+/* Style for the user message bubble */
+.message-bubble {
+    -fx-background-color: lightblue;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+    -fx-max-width: 300;
+    -fx-wrap-text: true;
+    -fx-text-fill: black;
+}
+
+/* You can style incoming and outgoing messages differently */
+.incoming-bubble {
+    -fx-background-color: lightgreen;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+    -fx-max-width: 300;
+    -fx-wrap-text: true;
+    -fx-text-fill: black;
+}
+/* dialogbox.css */
+
+/* Style for the user message bubble */
+.dialogbox-user-text {
+    -fx-background-color: lightblue;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: black;
+}
+
+/* Style for the Nicholas (bot) message bubble */
+.dialogbox-nicholas-text {
+    -fx-background-color: lightgreen;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: black;
+}
+
+/* Style for the profile picture */
+.dialogbox-image {
+    -fx-border-radius: 50%;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 3, 0.5, 1, 1);
+}
+

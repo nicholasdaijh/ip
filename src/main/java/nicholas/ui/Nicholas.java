@@ -134,4 +134,142 @@ public class Nicholas {
         // Show goodbye message
         ui.showBye();
     }
+
+    /**
+     * Handles user input, processes commands related to task management, and returns the appropriate GUI response.
+     *
+     * This method takes the user input, interprets it as a command, modifies the task list accordingly
+     * (adding, marking, unmarking, deleting, finding, etc.), and returns a string to be displayed on the GUI.
+     * It also handles any errors and exceptions during the
+     * process, providing an error message when necessary. The method interacts with various classes,
+     * including `Ui`, `Storage`, `Parser`, and `TaskList`, and updates the tasks stored in a file.
+     *
+     * @param input The raw input string from the user, containing the command and any arguments.
+     * @return A string response that will be displayed to the user in the GUI
+     *     indicating the result of the command or an error message.
+     * @throws NumberFormatException If an input containing a number cannot be parsed correctly.
+     * @throws NotTaskException If an unrecognized command is entered by the user.
+     * @throws EmptyCommandException If the user input is missing required arguments or is improperly formatted.
+     */
+    public String getGuiResponse(String input) {
+        Storage storage = new Storage("tasks.txt");
+        Parser parser = new Parser();
+        TaskList taskList = new TaskList();
+
+        // Load tasks from file
+        List<Task> loadedTasks;
+        try {
+            loadedTasks = storage.loadTasks();
+            for (Task task : loadedTasks) {
+                taskList.addTask(task);
+            }
+        } catch (IOException e) {
+            return "Error loading tasks: " + e.getMessage();
+        }
+
+        StringBuilder response = new StringBuilder();
+
+        try {
+            String[] commandParts = parser.parseCommand(input);
+            String command = commandParts[0].toLowerCase();
+
+            switch (command) {
+            case "mark":
+                if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+                    throw new EmptyCommandException(command);
+                }
+                int markIndex = Integer.parseInt(commandParts[1]) - 1;
+                taskList.markTaskAsDone(markIndex);
+                response.append("Nice! I've marked this task as done:\n").append(taskList.getTasks().get(markIndex));
+                break;
+            case "unmark":
+                if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+                    throw new EmptyCommandException(command);
+                }
+                int unmarkIndex = Integer.parseInt(commandParts[1]) - 1;
+                taskList.markTaskAsUndone(unmarkIndex);
+                response.append("OK, I've unmarked this task:\n").append(taskList.getTasks().get(unmarkIndex));
+                break;
+            case "list":
+                if (taskList.size() == 0) {
+                    response.append("Your task list is empty.");
+                } else {
+                    response.append("Here are your tasks:\n");
+                    for (int i = 0; i < taskList.size(); i++) {
+                        response.append((i + 1)).append(". ").append(taskList.getTasks().get(i)).append("\n");
+                    }
+                }
+                break;
+            case "delete":
+                if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+                    throw new EmptyCommandException(command);
+                }
+                int deleteIndex = Integer.parseInt(commandParts[1]) - 1;
+                Task taskToDelete = taskList.getTasks().get(deleteIndex);
+                taskList.deleteTask(deleteIndex);
+                response.append("Noted. I've removed this task:\n").append(taskToDelete);
+                break;
+            case "find":
+                if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+                    throw new EmptyCommandException(command);
+                }
+                response.append("Here are the matching tasks containing '").append(commandParts[1]).append("':\n");
+                int count = 1;
+                for (Task task : taskList.getTasks()) {
+                    if (task.getDescription().contains(commandParts[1])) {
+                        response.append(count).append(". ").append(task).append("\n");
+                        count++;
+                    }
+                }
+                if (count == 1) {
+                    response.append("No matching tasks found.");
+                }
+                break;
+            case "todo":
+                if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+                    throw new EmptyCommandException(command);
+                }
+                Task todoTask = new Todo(commandParts[1].trim());
+                taskList.addTask(todoTask);
+                response.append("Got it. I've added this task:\n").append(todoTask);
+                break;
+            case "deadline":
+                if (commandParts.length < 2 || commandParts[1].split("/by")[0].trim().isEmpty()) {
+                    throw new EmptyCommandException(command);
+                }
+                Task deadlineTask = parser.parseDeadline(commandParts[1]);
+                taskList.addTask(deadlineTask);
+                response.append("Got it. I've added this task:\n").append(deadlineTask);
+                break;
+            case "event":
+                if (commandParts.length < 2 || commandParts[1].split("/from")[0].trim().isEmpty()) {
+                    throw new EmptyCommandException(command);
+                }
+                Task eventTask = parser.parseEvent(commandParts[1]);
+                taskList.addTask(eventTask);
+                response.append("Got it. I've added this task:\n").append(eventTask);
+                break;
+            case "bye":
+                response.append("Bye! Hope to see you again soon!");
+                break;
+            default:
+                throw new NotTaskException("OOPS!!! I'm sorry, but I don't know what that means :-(");
+            }
+
+            // Save updated tasks
+            storage.emptyFile("tasks.txt");
+            storage.saveTasks(taskList.getTasks());
+
+        } catch (NotTaskException | EmptyCommandException e) {
+            response.append("Error: ").append(e.getMessage());
+        } catch (NumberFormatException e) {
+            response.append("Error: Please enter a valid number.");
+        } catch (Exception e) {
+            response.append("Unexpected error: ").append(e.getMessage());
+        }
+
+        return response.toString();
+    }
 }
+
+
