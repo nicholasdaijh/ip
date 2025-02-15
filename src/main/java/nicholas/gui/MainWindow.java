@@ -1,5 +1,7 @@
 package nicholas.gui;
 
+import java.io.FileNotFoundException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -13,9 +15,9 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
 import nicholas.ui.Nicholas;
 
+
 /**
- * Controller for the main GUI of the Nicholas chatbot.
- * This class handles user input and displays the chatbot's responses in a dialog format.
+ * Controller for the main GUI.
  */
 public class MainWindow extends AnchorPane {
     @FXML
@@ -24,15 +26,12 @@ public class MainWindow extends AnchorPane {
     private VBox dialogContainer;
     @FXML
     private TextField userInput;
+
     private Nicholas nicholas;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.jpg"));
     private Image nicholasImage = new Image(this.getClass().getResourceAsStream("/images/Nicholas.jpg"));
 
-    /**
-     * Initializes the GUI components, including the scroll pane,
-     * chatbot greeting message, and background image.
-     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
@@ -44,34 +43,31 @@ public class MainWindow extends AnchorPane {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, true, true)
         );
-
         // Apply the background to the dialogContainer
         dialogContainer.setBackground(new Background(background));
     }
 
-    /**
-     * Injects the Nicholas chatbot instance into the controller.
-     *
-     * @param n The Nicholas chatbot instance.
-     */
+    /** Injects the Nicholas instance */
     public void setNicholas(Nicholas n) {
         nicholas = n;
     }
 
     /**
-     * Handles user input by creating dialog boxes for both the user and Nicholas.
-     * The user's input is displayed, and Nicholas' response is retrieved and shown.
-     * The input field is cleared after processing.
+     * Creates two dialog boxes, one echoing user input and the other containing Duke's reply and then appends them to
+     * the dialog container. Clears the user input after processing.
      */
     @FXML
-    private void handleUserInput() {
-        String input = userInput.getText();
-
-        String response = nicholas.getGuiResponse(input);
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getNicholasDialog(response, nicholasImage)
-        );
-        userInput.clear();
+    private void handleUserInput() throws FileNotFoundException {
+        try {
+            String input = userInput.getText();
+            String response = nicholas.getGuiResponse(input);
+            dialogContainer.getChildren().addAll(
+                    DialogBox.getUserDialog(input, userImage),
+                    DialogBox.getNicholasDialog(response, nicholasImage)
+            );
+            userInput.clear();
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("Error: File not found.");
+        }
     }
 }

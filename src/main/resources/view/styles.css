@@ -26,6 +26,8 @@
     -fx-padding: 10;
     -fx-font-size: 14px;
     -fx-text-fill: black;
+    -fx-max-width: 400px;
+    -fx-wrap-text: true;
 }
 
 /* Style for the Nicholas (bot) message bubble */
@@ -35,6 +37,8 @@
     -fx-padding: 10;
     -fx-font-size: 14px;
     -fx-text-fill: black;
+    -fx-max-width: 400px;
+    -fx-wrap-text: true;
 }
 
 /* Style for the profile picture */

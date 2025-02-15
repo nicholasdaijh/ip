@@ -38,42 +38,77 @@ public class Parser {
 
         switch (taskType) {
         case "[T":
-            Task todoTask = new Todo(descriptionAndDate);
-            if (input.charAt(4) == 'X') {
-                todoTask.markAsDone();
-            }
-            return todoTask;
+            return convertToTodoObject(input, descriptionAndDate);
         case "[D":
-            int deadlineBy = descriptionAndDate.indexOf("by");
-            if (deadlineBy == -1) {
-                throw new IllegalArgumentException("Invalid deadline format");
-            }
-            String deadlineDate = descriptionAndDate.substring(deadlineBy + 4, descriptionAndDate.length() - 1);
-            Task deadlineTask = parseDeadline(descriptionAndDate.substring(0, deadlineBy - 2)
-                    + " /by " + reverseParseDate(deadlineDate));
-            if (input.charAt(4) == 'X') {
-                deadlineTask.markAsDone();
-            }
-            return deadlineTask;
+            return convertToDeadlineObject(input, descriptionAndDate);
         case "[E":
-            int eventStartIndexBegin = descriptionAndDate.indexOf("from:") + 6;
-            int eventStartIndexEnd = descriptionAndDate.indexOf("to:") - 1;
-            int eventEndIndexBegin = descriptionAndDate.indexOf("to:") + 4;
-            int eventEndIndexEnd = descriptionAndDate.length() - 1;
-            if (eventStartIndexBegin == -1 || eventStartIndexEnd == -1 || eventEndIndexBegin == -1) {
-                throw new IllegalArgumentException("Invalid event format");
-            }
-            String eventStart = descriptionAndDate.substring(eventStartIndexBegin, eventStartIndexEnd).trim();
-            String eventEnd = descriptionAndDate.substring(eventEndIndexBegin, eventEndIndexEnd).trim();
-            Task eventTask = parseEvent(descriptionAndDate.substring(0, eventStartIndexBegin - 8)
-                    + " /from " + reverseParseDate(eventStart) + " /to " + reverseParseDate(eventEnd));
-            if (input.charAt(4) == 'X') {
-                eventTask.markAsDone();
-            }
-            return eventTask;
+            return convertToEventObject(input, descriptionAndDate);
         default:
             throw new IllegalArgumentException("Invalid task type: " + taskType);
         }
+    }
+
+    /**
+     * Converts a parsed string into a {@code Todo} task.
+     *
+     * @param input The original task string.
+     * @param descriptionAndDate The description of the task.
+     * @return A Todo object.
+     */
+    public Task convertToTodoObject(String input, String descriptionAndDate) {
+        Task todoTask = new Todo(descriptionAndDate);
+        if (input.charAt(4) == 'X') {
+            todoTask.markAsDone();
+        }
+        return todoTask;
+    }
+
+    /**
+     * Converts a parsed string into a {@code Deadline} task.
+     *
+     * @param input The original task string.
+     * @param descriptionAndDate The description of the task with its deadline.
+     * @return A Deadline object.
+     * @throws IllegalArgumentException If the deadline format is invalid.
+     */
+    public Task convertToDeadlineObject(String input, String descriptionAndDate) {
+        int deadlineBy = descriptionAndDate.indexOf("by");
+        if (deadlineBy == -1) {
+            throw new IllegalArgumentException("Invalid deadline format");
+        }
+        String deadlineDate = descriptionAndDate.substring(deadlineBy + 4, descriptionAndDate.length() - 1);
+        Task deadlineTask = parseDeadline(descriptionAndDate.substring(0, deadlineBy - 2)
+                + " /by " + reverseParseDate(deadlineDate));
+        if (input.charAt(4) == 'X') {
+            deadlineTask.markAsDone();
+        }
+        return deadlineTask;
+    }
+
+    /**
+     * Converts a parsed string into an {@code Event} task.
+     *
+     * @param input The original task string.
+     * @param descriptionAndDate The description of the task with start and end times.
+     * @return An Event object.
+     * @throws IllegalArgumentException If the event format is invalid.
+     */
+    public Task convertToEventObject(String input, String descriptionAndDate) {
+        int eventStartIndexBegin = descriptionAndDate.indexOf("from:") + 6;
+        int eventStartIndexEnd = descriptionAndDate.indexOf("to:") - 1;
+        int eventEndIndexBegin = descriptionAndDate.indexOf("to:") + 4;
+        int eventEndIndexEnd = descriptionAndDate.length() - 1;
+        if (eventStartIndexBegin == -1 || eventStartIndexEnd == -1 || eventEndIndexBegin == -1) {
+            throw new IllegalArgumentException("Invalid event format");
+        }
+        String eventStart = descriptionAndDate.substring(eventStartIndexBegin, eventStartIndexEnd).trim();
+        String eventEnd = descriptionAndDate.substring(eventEndIndexBegin, eventEndIndexEnd).trim();
+        Task eventTask = parseEvent(descriptionAndDate.substring(0, eventStartIndexBegin - 8)
+                + " /from " + reverseParseDate(eventStart) + " /to " + reverseParseDate(eventEnd));
+        if (input.charAt(4) == 'X') {
+            eventTask.markAsDone();
+        }
+        return eventTask;
     }
 
     /**
