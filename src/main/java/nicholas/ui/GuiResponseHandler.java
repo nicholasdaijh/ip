@@ -111,7 +111,9 @@ public class GuiResponseHandler {
      */
     public String handleMarkCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        if (isCorrectCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         int markIndex = Integer.parseInt(commandParts[1]) - 1;
@@ -130,7 +132,9 @@ public class GuiResponseHandler {
      */
     public String handleUnmarkCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        if (isCorrectCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         int unmarkIndex = Integer.parseInt(commandParts[1]) - 1;
@@ -167,7 +171,9 @@ public class GuiResponseHandler {
      */
     public String handleDeleteCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        if (isCorrectCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         int deleteIndex = Integer.parseInt(commandParts[1]) - 1;
@@ -187,7 +193,9 @@ public class GuiResponseHandler {
      */
     public String handleFindCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        if (isCorrectCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         response.append("Here are the matching tasks containing '").append(commandParts[1]).append("':\n");
@@ -214,7 +222,9 @@ public class GuiResponseHandler {
      */
     public String handleTodoCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        if (commandParts.length < 2 || commandParts[1].trim().isEmpty()) {
+        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        if (isCorrectCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         Task todoTask = new Todo(commandParts[1].trim());
@@ -233,7 +243,9 @@ public class GuiResponseHandler {
      */
     public String handleDeadlineCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        if (commandParts.length < 2 || commandParts[1].split("/by")[0].trim().isEmpty()) {
+        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].split("/by")[0].trim().isEmpty();
+        if (isCorrectCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         Task deadlineTask = parser.parseDeadline(commandParts[1]);
@@ -252,7 +264,9 @@ public class GuiResponseHandler {
      */
     public String handleEventCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        if (commandParts.length < 2 || commandParts[1].split("/from")[0].trim().isEmpty()) {
+        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].split("/from")[0].trim().isEmpty();
+        if (isCorrectCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         Task eventTask = parser.parseEvent(commandParts[1]);
