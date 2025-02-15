@@ -35,10 +35,12 @@ public class Storage {
     public List<Task> loadTasks() throws FileNotFoundException {
         List<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
+        assert file.exists() : "File should exist before reading";
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             Parser taskParser = new Parser();
             String line = scanner.nextLine();
+            assert line != null && !line.isEmpty() : "Task line should not be null or empty";
             tasks.add(taskParser.parseTask(line));
         }
         scanner.close();
@@ -52,9 +54,11 @@ public class Storage {
      * @throws FileNotFoundException If the file cannot be found.
      */
     public void saveTasks(List<Task> tasks) throws FileNotFoundException {
+        assert tasks != null : "Tasks list should not be null";
         try {
             FileWriter fw = new FileWriter(filePath, true);
             for (Task task : tasks) {
+                assert tasks != null : "Tasks list should not be null";
                 fw.write(task.toString() + "\n");
             }
             fw.close();

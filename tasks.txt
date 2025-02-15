@@ -1,6 +1,0 @@
-[D][X] borrow book (by: Oct 10 2002 1000)
-[T][ ] read books
-[T][ ] read books
-[E][ ] partying (from: Oct 10 2020 0100 to: Oct 10 2020 0300)
-[T][ ] read books
-[T][ ] read books

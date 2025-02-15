@@ -32,7 +32,9 @@ public class Parser {
      * @throws IllegalArgumentException If the input format is invalid.
      */
     public Task parseTask(String input) {
+        assert input != null && !input.isEmpty() : "Input string should not be null or empty";
         String[] parts = input.split("\\]\\[", 2);
+        assert parts.length == 2 : "Input should be in a valid task format";
         String taskType = parts[0];
         String descriptionAndDate = parts[1].substring(3).trim();
 
@@ -73,6 +75,7 @@ public class Parser {
      */
     public Task convertToDeadlineObject(String input, String descriptionAndDate) {
         int deadlineBy = descriptionAndDate.indexOf("by");
+        assert deadlineBy != -1 : "Deadline task must contain 'by' keyword";
         if (deadlineBy == -1) {
             throw new IllegalArgumentException("Invalid deadline format");
         }
@@ -119,6 +122,7 @@ public class Parser {
      * @throws IllegalArgumentException If the date format is invalid.
      */
     public String parseDate(String by) {
+        assert by != null && !by.isEmpty() : "Date string should not be null or empty";
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm");
 
@@ -138,6 +142,7 @@ public class Parser {
      * @throws IllegalArgumentException If the date format is invalid.
      */
     public String reverseParseDate(String by) {
+        assert by != null && !by.isEmpty() : "Date string should not be null or empty";
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm");
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
@@ -156,7 +161,9 @@ public class Parser {
      * @return A Deadline task object.
      */
     public static Task parseDeadline(String input) {
+        assert input != null && !input.isEmpty() : "Deadline input should not be null or empty";
         String[] parts = input.split("/by", 2);
+        assert parts.length == 2 : "Deadline format should contain '/by'";
         return new Deadline(parts[0].trim(), parts[1].trim());
     }
 
@@ -167,9 +174,12 @@ public class Parser {
      * @return An Event task object.
      */
     public static Task parseEvent(String input) {
+        assert input != null && !input.isEmpty() : "Event input should not be null or empty";
         String[] parts = input.split("/from", 2);
+        assert parts.length == 2 : "Event format should contain '/from'";
         String description = parts[0].trim();
         parts = parts[1].split("/to", 2);
+        assert parts.length == 2 : "Event format should contain '/to'";
         String from = parts[0].trim();
         String to = parts[1].trim();
         return new Event(description, from, to);
