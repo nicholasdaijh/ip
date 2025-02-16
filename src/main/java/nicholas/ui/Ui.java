@@ -123,6 +123,30 @@ public class Ui {
     }
 
     /**
+     * Displays a message confirming that a task's priority has been upgraded.
+     *
+     * @param task The task that was upgraded.
+     */
+    public void showTaskUpgraded(Task task) {
+        System.out.println(LINE);
+        System.out.println("OK, I've upgraded this task:");
+        System.out.println(task.toString());
+        System.out.println(LINE);
+    }
+
+    /**
+     * Displays a message confirming that a task's priority has been downgraded.
+     *
+     * @param task The task that was downgraded.
+     */
+    public void showTaskDowngraded(Task task) {
+        System.out.println(LINE);
+        System.out.println("OK, I've downgraded this task:");
+        System.out.println(task.toString());
+        System.out.println(LINE);
+    }
+
+    /**
      * Displays an error message to the user.
      *
      * @param message The error message to display.

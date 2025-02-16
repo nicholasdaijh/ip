@@ -52,6 +52,10 @@ public class GuiResponseHandler {
             return handleDeleteCommand(commandParts, command);
         case "find":
             return handleFindCommand(commandParts, command);
+        case "upgrade":
+            return handleUpgradePriorityCommand(commandParts, command);
+        case "downgrade":
+            return handleDowngradePriorityCommand(commandParts, command);
         case "todo":
             return handleTodoCommand(commandParts, command);
         case "deadline":
@@ -111,9 +115,9 @@ public class GuiResponseHandler {
      */
     public String handleMarkCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         int markIndex = Integer.parseInt(commandParts[1]) - 1;
@@ -132,9 +136,9 @@ public class GuiResponseHandler {
      */
     public String handleUnmarkCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         int unmarkIndex = Integer.parseInt(commandParts[1]) - 1;
@@ -171,9 +175,9 @@ public class GuiResponseHandler {
      */
     public String handleDeleteCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         int deleteIndex = Integer.parseInt(commandParts[1]) - 1;
@@ -193,9 +197,9 @@ public class GuiResponseHandler {
      */
     public String handleFindCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         response.append("Here are the matching tasks containing '").append(commandParts[1]).append("':\n");
@@ -213,6 +217,58 @@ public class GuiResponseHandler {
     }
 
     /**
+     * Handles the "upgrade" command to increase the priority of a task.
+     * <p>
+     * If the task's priority is {@code LOW}, it is upgraded to {@code MEDIUM}.
+     * If the task's priority is {@code MEDIUM}, it is upgraded to {@code HIGH}.
+     * If the task is already at {@code HIGH} priority, no changes are made.
+     * </p>
+     *
+     * @param commandParts The parsed command parts containing the task index.
+     * @param command The command keyword.
+     * @return The response message confirming the priority upgrade.
+     * @throws EmptyCommandException If no task index is provided.
+     */
+    public String handleUpgradePriorityCommand(String[] commandParts, String command) throws EmptyCommandException {
+        StringBuilder response = new StringBuilder();
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        if (isWrongCommandPartsLength || isEmptyCommand) {
+            throw new EmptyCommandException(command);
+        }
+        int upgradeIndex = Integer.parseInt(commandParts[1]) - 1;
+        taskList.upgradeTask(upgradeIndex);
+        response = response.append("OK, I've upgraded this task:\n").append(taskList.getTasks().get(upgradeIndex));
+        return response.toString();
+    }
+
+    /**
+     * Handles the "downgrade" command to decrease the priority of a task.
+     * <p>
+     * If the task's priority is {@code HIGH}, it is downgraded to {@code MEDIUM}.
+     * If the task's priority is {@code MEDIUM}, it is downgraded to {@code LOW}.
+     * If the task is already at {@code LOW} priority, no changes are made.
+     * </p>
+     *
+     * @param commandParts The parsed command parts containing the task index.
+     * @param command The command keyword.
+     * @return The response message confirming the priority downgrade.
+     * @throws EmptyCommandException If no task index is provided.
+     */
+    public String handleDowngradePriorityCommand(String[] commandParts, String command) throws EmptyCommandException {
+        StringBuilder response = new StringBuilder();
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        if (isWrongCommandPartsLength || isEmptyCommand) {
+            throw new EmptyCommandException(command);
+        }
+        int downgradeIndex = Integer.parseInt(commandParts[1]) - 1;
+        taskList.downgradeTask(downgradeIndex);
+        response = response.append("OK, I've downgraded this task:\n").append(taskList.getTasks().get(downgradeIndex));
+        return response.toString();
+    }
+
+    /**
      * Handles the "todo" command to add a new Todo task.
      *
      * @param commandParts The parsed command parts.
@@ -222,9 +278,9 @@ public class GuiResponseHandler {
      */
     public String handleTodoCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         Task todoTask = new Todo(commandParts[1].trim());
@@ -243,9 +299,9 @@ public class GuiResponseHandler {
      */
     public String handleDeadlineCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].split("/by")[0].trim().isEmpty();
-        if (isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         Task deadlineTask = parser.parseDeadline(commandParts[1]);
@@ -264,9 +320,9 @@ public class GuiResponseHandler {
      */
     public String handleEventCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].split("/from")[0].trim().isEmpty();
-        if (isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         Task eventTask = parser.parseEvent(commandParts[1]);

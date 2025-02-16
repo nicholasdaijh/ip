@@ -53,7 +53,8 @@ public class UserCommandHandler {
      * @throws NotTaskException if the command is not recognized
      * @throws EmptyCommandException if the command is missing required arguments
      */
-    public void processUserCommand(String userInput, String[] commandParts, String command) throws NotTaskException, EmptyCommandException {
+    public void processUserCommand(
+            String userInput, String[] commandParts, String command) throws NotTaskException, EmptyCommandException {
         switch (command) {
         case "mark":
             handleMarkCommand(userInput, commandParts, command);
@@ -69,6 +70,12 @@ public class UserCommandHandler {
             break;
         case "find":
             handleFindCommand(userInput, commandParts, command);
+            break;
+        case "upgrade":
+            handleUpgradePriorityCommand(userInput, commandParts, command);
+            break;
+        case "downgrade":
+            handleDowngradePriorityCommand(userInput, commandParts, command);
             break;
         case "todo":
             handleTodoCommand(userInput, commandParts, command);
@@ -129,9 +136,9 @@ public class UserCommandHandler {
     public void handleMarkCommand(
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 4;
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isInputLengthEqualToCommandLength || isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         int markIndex = Integer.parseInt(commandParts[1]) - 1;
@@ -150,9 +157,9 @@ public class UserCommandHandler {
     public void handleUnmarkCommand(
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 6;
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isInputLengthEqualToCommandLength || isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         int unmarkIndex = Integer.parseInt(commandParts[1]) - 1;
@@ -178,9 +185,9 @@ public class UserCommandHandler {
     public void handleDeleteCommand(
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 6;
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isInputLengthEqualToCommandLength || isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         int deleteIndex = Integer.parseInt(commandParts[1]) - 1;
@@ -200,12 +207,56 @@ public class UserCommandHandler {
     public void handleFindCommand(
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 4;
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isInputLengthEqualToCommandLength || isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         ui.showTaskFind(taskList.getTasks().toArray(new Task[0]), commandParts[1], taskList.size());
+    }
+
+    /**
+     * Handles the "upgrade" command to increase the priority of a specified task.
+     *
+     * @param userInput the raw input from the user
+     * @param commandParts the parts of the command
+     * @param command the "upgrade" command string
+     * @throws EmptyCommandException if the command is missing the task index
+     */
+    public void handleUpgradePriorityCommand(
+            String userInput, String[] commandParts, String command) throws EmptyCommandException {
+        boolean isInputLengthEqualToCommandLength = userInput.length() == 7;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
+            throw new EmptyCommandException(command);
+        }
+        int upgradeIndex = Integer.parseInt(commandParts[1]) - 1;
+        Task taskToUpgrade = taskList.getTasks().get(upgradeIndex);
+        taskList.upgradeTask(upgradeIndex);
+        ui.showTaskUpgraded(taskToUpgrade);
+    }
+
+    /**
+     * Handles the "downgrade" command to decrease the priority of a specified task.
+     *
+     * @param userInput the raw input from the user
+     * @param commandParts the parts of the command
+     * @param command the "downgrade" command string
+     * @throws EmptyCommandException if the command is missing the task index
+     */
+    public void handleDowngradePriorityCommand(
+            String userInput, String[] commandParts, String command) throws EmptyCommandException {
+        boolean isInputLengthEqualToCommandLength = userInput.length() == 9;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
+        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
+            throw new EmptyCommandException(command);
+        }
+        int downgradeIndex = Integer.parseInt(commandParts[1]) - 1;
+        Task taskToDowngrade = taskList.getTasks().get(downgradeIndex);
+        taskList.downgradeTask(downgradeIndex);
+        ui.showTaskDowngraded(taskToDowngrade);
     }
 
     /**
@@ -219,9 +270,9 @@ public class UserCommandHandler {
     public void handleTodoCommand(
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 4;
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].trim().isEmpty();
-        if (isInputLengthEqualToCommandLength || isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         String todoDescription = commandParts[1].trim();
@@ -241,9 +292,9 @@ public class UserCommandHandler {
     public void handleDeadlineCommand(
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 8;
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].split("/by")[0].trim().isEmpty();
-        if (isInputLengthEqualToCommandLength || isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         Task deadlineTask = parser.parseDeadline(commandParts[1]);
@@ -262,9 +313,9 @@ public class UserCommandHandler {
     public void handleEventCommand(
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 5;
-        boolean isCorrectCommandPartsLength = commandParts.length < 2;
+        boolean isWrongCommandPartsLength = commandParts.length < 2;
         boolean isEmptyCommand = commandParts[1].split("/from")[0].trim().isEmpty();
-        if (isInputLengthEqualToCommandLength || isCorrectCommandPartsLength || isEmptyCommand) {
+        if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
         Task eventTask = parser.parseEvent(commandParts[1]);

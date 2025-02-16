@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 
 import nicholas.tasks.Deadline;
 import nicholas.tasks.Event;
+import nicholas.tasks.Priority;
 import nicholas.tasks.Task;
 import nicholas.tasks.Todo;
 
@@ -36,15 +37,18 @@ public class Parser {
         String[] parts = input.split("\\]\\[", 2);
         assert parts.length == 2 : "Input should be in a valid task format";
         String taskType = parts[0];
-        String descriptionAndDate = parts[1].substring(3).trim();
-
+        String descriptionAndPriority = parts[1].substring(3).trim();
+        parts = descriptionAndPriority.split("\\(Priority:", 2);
+        String description = parts[0].trim();
+        String priority = parts[1].trim().split("\\)", 2)[0];
+        String descriptionAndDate = description + parts[1].trim().split("\\)", 2)[1];;
         switch (taskType) {
         case "[T":
-            return convertToTodoObject(input, descriptionAndDate);
+            return convertToTodoObject(input, descriptionAndDate, Priority.valueOf(priority));
         case "[D":
-            return convertToDeadlineObject(input, descriptionAndDate);
+            return convertToDeadlineObject(input, descriptionAndDate, Priority.valueOf(priority));
         case "[E":
-            return convertToEventObject(input, descriptionAndDate);
+            return convertToEventObject(input, descriptionAndDate, Priority.valueOf(priority));
         default:
             throw new IllegalArgumentException("Invalid task type: " + taskType);
         }
@@ -57,11 +61,12 @@ public class Parser {
      * @param descriptionAndDate The description of the task.
      * @return A Todo object.
      */
-    public Task convertToTodoObject(String input, String descriptionAndDate) {
+    public Task convertToTodoObject(String input, String descriptionAndDate, Priority priority) {
         Task todoTask = new Todo(descriptionAndDate);
         if (input.charAt(4) == 'X') {
             todoTask.markAsDone();
         }
+        todoTask.setPriority(priority);
         return todoTask;
     }
 
@@ -73,7 +78,7 @@ public class Parser {
      * @return A Deadline object.
      * @throws IllegalArgumentException If the deadline format is invalid.
      */
-    public Task convertToDeadlineObject(String input, String descriptionAndDate) {
+    public Task convertToDeadlineObject(String input, String descriptionAndDate, Priority priority) {
         int deadlineBy = descriptionAndDate.indexOf("by");
         assert deadlineBy != -1 : "Deadline task must contain 'by' keyword";
         if (deadlineBy == -1) {
@@ -85,6 +90,7 @@ public class Parser {
         if (input.charAt(4) == 'X') {
             deadlineTask.markAsDone();
         }
+        deadlineTask.setPriority(priority);
         return deadlineTask;
     }
 
@@ -96,7 +102,7 @@ public class Parser {
      * @return An Event object.
      * @throws IllegalArgumentException If the event format is invalid.
      */
-    public Task convertToEventObject(String input, String descriptionAndDate) {
+    public Task convertToEventObject(String input, String descriptionAndDate, Priority priority) {
         int eventStartIndexBegin = descriptionAndDate.indexOf("from:") + 6;
         int eventStartIndexEnd = descriptionAndDate.indexOf("to:") - 1;
         int eventEndIndexBegin = descriptionAndDate.indexOf("to:") + 4;
@@ -111,6 +117,7 @@ public class Parser {
         if (input.charAt(4) == 'X') {
             eventTask.markAsDone();
         }
+        eventTask.setPriority(priority);
         return eventTask;
     }
 

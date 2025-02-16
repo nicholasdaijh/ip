@@ -7,15 +7,17 @@ package nicholas.tasks;
 public abstract class Task {
     private String description;
     private boolean isDone;
+    private Priority priority; // Added priority field
 
     /**
-     * Constructs a Task with the given description.
+     * Constructs a Task with the given description and priority.
      *
      * @param description The description of the task.
      */
     public Task(String description) {
         this.description = description;
         this.isDone = false; // Tasks are initially not done.
+        this.priority = Priority.LOW;
     }
 
     /**
@@ -38,6 +40,24 @@ public abstract class Task {
     }
 
     /**
+     * Returns the priority of the task.
+     *
+     * @return The priority of the task.
+     */
+    public Priority getPriority() {
+        return this.priority;
+    }
+
+    /**
+     * Sets a new priority for the task.
+     *
+     * @param priority The new priority level.
+     */
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    /**
      * Marks the task as done.
      */
     public void markAsDone() {
@@ -53,13 +73,13 @@ public abstract class Task {
 
     /**
      * Returns a string representation of the task,
-     * including its type, status, and description.
+     * including its type, status, description, and priority.
      *
      * @return A formatted string representation of the task.
      */
     @Override
     public String toString() {
-        return "[" + getTaskType() + "]" + "[" + getStatusIcon() + "] " + description;
+        return "[" + getTaskType() + "][" + getStatusIcon() + "] " + description + " (Priority: " + priority + ")";
     }
 
     /**
