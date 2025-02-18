@@ -28,7 +28,7 @@ public class Main extends Application {
             Scene scene = new Scene(ap);
             stage.setScene(scene);
             fxmlLoader.<MainWindow>getController().setNicholas(nicholas); // Inject the Nicholas instance
-            stage.setTitle("Nicholas Chatbot");
+            stage.setTitle("Nicholas");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
