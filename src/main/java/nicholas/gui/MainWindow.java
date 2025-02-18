@@ -7,11 +7,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
 import nicholas.ui.Nicholas;
 
@@ -29,22 +24,23 @@ public class MainWindow extends AnchorPane {
 
     private Nicholas nicholas;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.jpg"));
-    private Image nicholasImage = new Image(this.getClass().getResourceAsStream("/images/Nicholas.jpg"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/User.JPG"));
+    private Image nicholasImage = new Image(this.getClass().getResourceAsStream("/images/Nicholas.JPG"));
 
+    /**
+     * Initializes the main window by setting up bindings and displaying the initial message.
+     * <p>
+     * This method binds the vertical scroll position of the {@code ScrollPane} to the height
+     * of the {@code dialogContainer}, ensuring that new messages appear at the bottom.
+     * It also displays an initial greeting message from Nicholas.
+     * </p>
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         dialogContainer.getChildren().addAll(
                 DialogBox.getNicholasDialog("Hello! What can I do for you?", nicholasImage)
         );
-        BackgroundImage background = new BackgroundImage(
-                new Image(this.getClass().getResource("/images/background.jpeg").toExternalForm()),
-                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
-                BackgroundPosition.CENTER, new BackgroundSize(100, 100, true, true, true, true)
-        );
-        // Apply the background to the dialogContainer
-        dialogContainer.setBackground(new Background(background));
     }
 
     /** Injects the Nicholas instance */

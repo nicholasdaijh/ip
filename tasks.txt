@@ -1,3 +1,3 @@
-[E][ ] partying (Priority: HIGH) (from: Oct 10 2010 1000 to: Oct 10 2010 1200)
-[T][X] read books (Priority: HIGH)
-[D][X] homework (Priority: HIGH) (by: Oct 10 2020 1000)
+[E][ ] partying (Priority: MEDIUM) (from: Oct 10 2010 1000 to: Oct 10 2010 1200)
+[T][X] read books (Priority: MEDIUM)
+[D][ ] homework (Priority: HIGH) (by: Oct 10 2020 1000)
