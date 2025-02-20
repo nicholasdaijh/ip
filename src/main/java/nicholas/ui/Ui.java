@@ -28,13 +28,6 @@ public class Ui {
     }
 
     /**
-     * Displays a horizontal line separator.
-     */
-    public void showLine() {
-        System.out.println(LINE);
-    }
-
-    /**
      * Displays a message confirming that a task has been added.
      *
      * @param task The task that was added.

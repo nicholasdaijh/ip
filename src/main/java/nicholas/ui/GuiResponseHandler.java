@@ -25,7 +25,7 @@ public class GuiResponseHandler {
      * Initializes a new instance of the GuiResponseHandler with default components.
      */
     public GuiResponseHandler() {
-        storage = new Storage("tasks.txt");
+        storage = new Storage();
         parser = new Parser();
         taskList = new TaskList();
     }
@@ -116,7 +116,12 @@ public class GuiResponseHandler {
     public String handleMarkCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -137,7 +142,12 @@ public class GuiResponseHandler {
     public String handleUnmarkCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -176,7 +186,12 @@ public class GuiResponseHandler {
     public String handleDeleteCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -198,7 +213,12 @@ public class GuiResponseHandler {
     public String handleFindCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -232,7 +252,12 @@ public class GuiResponseHandler {
     public String handleUpgradePriorityCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -258,7 +283,12 @@ public class GuiResponseHandler {
     public String handleDowngradePriorityCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -279,7 +309,12 @@ public class GuiResponseHandler {
     public String handleTodoCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -300,7 +335,12 @@ public class GuiResponseHandler {
     public String handleDeadlineCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].split("/by")[0].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].split("/by")[0].trim().isEmpty();
+        }
         if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -321,7 +361,12 @@ public class GuiResponseHandler {
     public String handleEventCommand(String[] commandParts, String command) throws EmptyCommandException {
         StringBuilder response = new StringBuilder();
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].split("/from")[0].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].split("/from")[0].trim().isEmpty();
+        }
         if (isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }

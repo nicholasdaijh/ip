@@ -14,17 +14,7 @@ import nicholas.tasks.Task;
  * Handles loading and saving tasks to a file.
  */
 public class Storage {
-    private String filePath;
-
-    /**
-     * Constructs a Storage object with the specified file path.
-     *
-     * @param filePath The path of the file to store tasks.
-     */
-    public Storage(String filePath) {
-        assert filePath != null && !filePath.isEmpty() : "File path should not be null or empty";
-        this.filePath = filePath;
-    }
+    private static final String filePath = "tasks.txt";
 
     /**
      * Loads tasks from the specified file.
@@ -36,6 +26,9 @@ public class Storage {
         List<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
         assert file.exists() : "File should exist before reading";
+        if (!file.exists()) {
+            return tasks;
+        }
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             Parser taskParser = new Parser();

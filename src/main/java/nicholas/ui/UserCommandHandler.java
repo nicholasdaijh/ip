@@ -28,7 +28,7 @@ public class UserCommandHandler {
      */
     public UserCommandHandler() {
         ui = new Ui();
-        storage = new Storage("tasks.txt");
+        storage = new Storage();
         parser = new Parser();
         taskList = new TaskList();
 
@@ -137,7 +137,12 @@ public class UserCommandHandler {
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 4;
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -158,7 +163,12 @@ public class UserCommandHandler {
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 6;
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -186,7 +196,12 @@ public class UserCommandHandler {
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 6;
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -208,7 +223,12 @@ public class UserCommandHandler {
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 4;
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -227,7 +247,12 @@ public class UserCommandHandler {
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 7;
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -249,7 +274,12 @@ public class UserCommandHandler {
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 9;
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -271,7 +301,12 @@ public class UserCommandHandler {
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 4;
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].trim().isEmpty();
+        }
         if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -293,7 +328,12 @@ public class UserCommandHandler {
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 8;
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].split("/by")[0].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].split("/by")[0].trim().isEmpty();
+        }
         if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
@@ -314,7 +354,12 @@ public class UserCommandHandler {
             String userInput, String[] commandParts, String command) throws EmptyCommandException {
         boolean isInputLengthEqualToCommandLength = userInput.length() == 5;
         boolean isWrongCommandPartsLength = commandParts.length < 2;
-        boolean isEmptyCommand = commandParts[1].split("/from")[0].trim().isEmpty();
+        boolean isEmptyCommand;
+        if (isWrongCommandPartsLength) {
+            isEmptyCommand = true;
+        } else {
+            isEmptyCommand = commandParts[1].split("/from")[0].trim().isEmpty();
+        }
         if (isInputLengthEqualToCommandLength || isWrongCommandPartsLength || isEmptyCommand) {
             throw new EmptyCommandException(command);
         }
